@@ -110,4 +110,4 @@ Stores the final Secret Santa pairings once generated.
 
 ### ER Diagram
 
-(Insert diagram screenshot here(Document/images/database/ER_digram.png))
+(diagram screenshot here (Document/images/database/ER_digram.png))
