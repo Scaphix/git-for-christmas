@@ -70,3 +70,44 @@ Below are the wireframes for the project:
 
 - **Homepage, Dashboard, and Add Participant**
   ![Tablet Combined Wireframe](Document/images/wireframes/Wireframe_tablet_home_add_dashboard.png)
+
+## Database Schema
+
+The project uses a simple relational database structure to support the core Secret Santa features: adding participants, preventing invalid pairings, and generating matches.
+
+### Participant Table
+
+Stores information about each person taking part in the Secret Santa.
+
+| Field            | Type   | Description                                      |
+|------------------|--------|--------------------------------------------------|
+| id (PK)          | int    | Unique identifier for each participant          |
+| name             | text   | Participant's name                              |
+| email            | text   | Optional email address                          |
+| wishlist         | longtext | Optional gift wishlist                          |
+| dont_match_with  | int (FK) | Self-referencing field to avoid matching two specific people |
+
+### Match Table
+
+Stores the final Secret Santa pairings once generated.
+
+| Field            | Type   | Description                                      |
+|------------------|--------|--------------------------------------------------|
+| id (PK)          | int    | Unique identifier for each match record         |
+| giver_id (FK)    | int    | Participant who gives the gift                  |
+| receiver_id (FK) | int    | Participant who receives the gift               |
+| created_at       | datetime | Timestamp of when the match was created         |
+
+### Relationships
+
+- `Participant.dont_match_with → Participant.id`
+  (Self-referencing relationship to support "don't match me with X".)
+
+- `Match.giver_id → Participant.id`
+
+- `Match.receiver_id → Participant.id`
+  (Each match links a giver and a receiver.)
+
+### ER Diagram
+
+(Insert diagram screenshot here(Document/images/database/ER_digram.png))
