@@ -21,6 +21,157 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <style>
+        /* Navbar Styling */
+        .custom-navbar {
+            background: linear-gradient(135deg, #2d5016 0%, #1a3009 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-brand:hover {
+            color: #ffd700;
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+
+        .nav-brand::before {
+            content: "🎅";
+            font-size: 1.2em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        .nav-links a:hover::before {
+            left: 0;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links a:active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 12px 20px;
+                flex-wrap: wrap;
+            }
+
+            .nav-brand {
+                font-size: 1.2em;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 5px;
+                margin-top: 10px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Footer Styling */
+        .footer {
+            background: linear-gradient(135deg, #1a3009 0%, #0f1d05 100%);
+            color: white;
+            padding: 30px 20px;
+            margin-top: 0;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5em;
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .social-link:hover {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -42,7 +193,7 @@
     <nav class="custom-navbar">
         <div class="nav-container">
             <!-- Brand logo -->
-            <a href="#" class="nav-brand">git-for-christmas</a>
+            <a href="/" class="nav-brand">Secret Santa</a>
 
             <!-- Right side navigation group -->
             <div class="nav-right">
