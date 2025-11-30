@@ -73,41 +73,52 @@ Below are the wireframes for the project:
 
 ## Database Schema
 
-The project uses a simple relational database structure to support the core Secret Santa features: adding participants, preventing invalid pairings, and generating matches.
+The project consists of four main apps: `gifts`, `logs`, `matches`, and `users`. Below is the updated schema for each app:
 
-### Participant Table
+### Gifts App
 
-Stores information about each person taking part in the Secret Santa.
+| Field            | Type      | Description                                      |
+|------------------|-----------|--------------------------------------------------|
+| id (PK)          | int       | Unique identifier for each gift                 |
+| name             | varchar   | Name of the gift                                |
+| description      | text      | Description of the gift                         |
+| price            | decimal   | Price of the gift                               |
+| created_at       | timestamp | Timestamp of when the gift was added            |
 
-| Field            | Type   | Description                                      |
-|------------------|--------|--------------------------------------------------|
-| id (PK)          | int    | Unique identifier for each participant          |
-| name             | text   | Participant's name                              |
-| email            | text   | Optional email address                          |
-| wishlist         | longtext | Optional gift wishlist                          |
-| dont_match_with  | int (FK) | Self-referencing field to avoid matching two specific people |
+### Logs App
 
-### Match Table
+| Field            | Type      | Description                                      |
+|------------------|-----------|--------------------------------------------------|
+| id (PK)          | int       | Unique identifier for each log entry            |
+| message          | text      | Log message                                     |
+| level            | varchar   | Log level (e.g., INFO, ERROR)                   |
+| created_at       | timestamp | Timestamp of the log entry                      |
 
-Stores the final Secret Santa pairings once generated.
+### Matches App
 
-| Field            | Type   | Description                                      |
-|------------------|--------|--------------------------------------------------|
-| id (PK)          | int    | Unique identifier for each match record         |
-| giver_id (FK)    | int    | Participant who gives the gift                  |
-| receiver_id (FK) | int    | Participant who receives the gift               |
-| created_at       | datetime | Timestamp of when the match was created         |
+| Field            | Type      | Description                                      |
+|------------------|-----------|--------------------------------------------------|
+| id (PK)          | int       | Unique identifier for each match record         |
+| giver_id (FK)    | int       | Participant who gives the gift                  |
+| receiver_id (FK) | int       | Participant who receives the gift               |
+| created_at       | timestamp | Timestamp of when the match was created         |
+
+### Users App
+
+| Field            | Type      | Description                                      |
+|------------------|-----------|--------------------------------------------------|
+| id (PK)          | int       | Unique identifier for each user                 |
+| username         | varchar   | Username of the user                            |
+| email            | varchar   | Email address of the user                       |
+| password         | varchar   | Hashed password                                 |
+| created_at       | timestamp | Timestamp of when the user was created          |
 
 ### Relationships
 
-- `Participant.dont_match_with → Participant.id`
-  (Self-referencing relationship to support "don't match me with X".)
-
-- `Match.giver_id → Participant.id`
-
-- `Match.receiver_id → Participant.id`
-  (Each match links a giver and a receiver.)
+- `Matches.giver_id → Users.id`
+- `Matches.receiver_id → Users.id`
+- `Gifts` and `Users` can be linked for wishlist functionality.
 
 ### ER Diagram
 
-(diagram screenshot here (Document/images/database/ER_digram.png))
+![ER Diagram](Document/images/database/ER_digram.png)
