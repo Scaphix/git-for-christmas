@@ -11,6 +11,20 @@ This project is a Django-based web application designed to manage and share Chri
 - Database integration
 - Environment variable management
 
+## Technologies Used
+
+This project leverages the following technologies:
+
+- **Python 3.12**: The core programming language used for development.
+- **Django 5.2.8**: A high-level Python web framework for rapid development and clean design.
+- **SQLite**: A lightweight relational database used for development.
+- **Bootstrap 5**: A CSS framework for responsive and modern web design.
+- **Font Awesome**: For scalable vector icons and social logos.
+- **Git**: Version control system for tracking changes and collaboration.
+- **Virtualenv**: For creating isolated Python environments.
+
+These technologies were chosen to ensure scalability, maintainability, and ease of development.
+
 ## Setup Instructions
 
 1. **Clone the Repository**
@@ -122,3 +136,10 @@ The project consists of four main apps: `gifts`, `logs`, `matches`, and `users`.
 ### ER Diagram
 
 ![ER Diagram](Document/images/database/ER_digram.png)
+
+## Future Enhancements
+
+- Add user roles (e.g., admin, regular user).
+- Implement email notifications for matches.
+- Add support for multiple Secret Santa groups.
+- Improve the UI with more interactive elements.
