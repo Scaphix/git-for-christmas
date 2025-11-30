@@ -17,3 +17,9 @@ def santas_list(request):
     for the /santas/ path.
     """
     return JsonResponse({'status': 'ok', 'message': 'Santas list view is active.'})
+
+
+def santas_list_view(request): 
+    """ Renders the main Secret Santa list and matching interface. 
+    """ 
+    return render(request, 'users/santas_list.html', {})
