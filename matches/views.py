@@ -20,9 +20,8 @@ def matches_list(request):
 
 def generate_matches():
     """
-    Simple function to match participants in pairs.
-    User 1 → User 2, User 3 → User 4, etc.
-    If odd number, last user is unmatched.
+    Randomly match each participant with another participant.
+    Each person gives to a randomly assigned person (circular matching).
 
     Returns: (success: bool, message: str)
     """
@@ -42,27 +41,16 @@ def generate_matches():
             # Shuffle participants randomly
             random.shuffle(participants)
 
-            # Match in pairs: person 0 → person 1, person 2 → person 3, etc.
-            matches_created = 0
-            for i in range(0, len(participants), 2):
-                # If odd number, skip the last person
-                if i + 1 >= len(participants):
-                    break
-
+            # Create circular random matches
+            # Each person gives to the next person in the shuffled list
+            # Last person gives to first person (ensures everyone is matched)
+            for i in range(len(participants)):
                 giver = participants[i]
-                receiver = participants[i + 1]
+                receiver = participants[(i + 1) % len(participants)]
                 Match.objects.create(giver=giver, receiver=receiver)
-                matches_created += 1
 
-            # Check if someone was left unmatched
-            unmatched = len(participants) % 2
-            if unmatched:
-                msg = (f"Successfully matched {matches_created} pair(s)! "
-                       f"1 participant left unmatched (odd number).")
-            else:
-                msg = f"Successfully matched {matches_created} pair(s)!"
-
-            return True, msg
+            count = len(participants)
+            return True, f"Successfully matched {count} participants!"
 
     except Exception as e:
         return False, f"Error: {str(e)}"
