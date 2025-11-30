@@ -1,0 +1,152 @@
+{# santas_list#}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Secret Santa Participants{% endblock %}
+
+{% block content %}
+    <title>Secret Santa Participants</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Snowball animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: white;
+            font-size: 20px;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* Create multiple snowballs at different positions */
+        .snowflake:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+        .snowflake:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 2s; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 9s; animation-delay: 1s; }
+        .snowflake:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 3s; }
+        .snowflake:nth-child(5) { left: 50%; animation-duration: 7s; animation-delay: 1.5s; }
+        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 0.5s; }
+        .snowflake:nth-child(7) { left: 70%; animation-duration: 10s; animation-delay: 2.5s; }
+        .snowflake:nth-child(8) { left: 80%; animation-duration: 8s; animation-delay: 1s; }
+        .snowflake:nth-child(9) { left: 90%; animation-duration: 11s; animation-delay: 0s; }
+        .snowflake:nth-child(10) { left: 15%; animation-duration: 9s; animation-delay: 3s; }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            color: #c41e3a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        
+        .participant-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .participant-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #fff5f5;
+            border-left: 4px solid #c41e3a;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .participant-name {
+            font-size: 1.2em;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .participant-date {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .no-participants {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+        
+        .count {
+            text-align: center;
+            color: #c41e3a;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <!-- Falling snowballs -->
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+    <div class="snowflake">⚪</div>
+
+    <div class="container">
+        <h1>🎅 Secret Santa 🎄</h1>
+        <p class="subtitle">Gift Exchange Participants</p>
+
+       
+
+        {% if santas %}
+            <p class="count">Total Participants: {{ santas|length }}</p>
+
+            <ul class="participant-list">
+                {% for santa in santas %}
+                    <li class="participant-item">
+                        <div>
+                            <div class="participant-name">{{ santa.user.username }}</div>
+                            <div class="participant-date">Joined: {{ santa.created_at|date:"F d, Y" }}</div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-participants">
+                <p>No participants yet! 🎁</p>
+                <p>Be the first to join the Secret Santa!</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
