@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import path
-from django.utils.html import format_html
 from .models import Match
 from .views import generate_matches
 
@@ -11,8 +10,9 @@ from .views import generate_matches
 
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('giver', 'receiver', 'created_at', 'match_actions')
+    list_display = ('giver', 'receiver', 'created_at')
     search_fields = ('giver__user__username', 'receiver__user__username')
+    actions = ['generate_secret_santa_matches', 'clear_all_matches']
 
     def get_urls(self):
         urls = super().get_urls()
@@ -30,47 +30,67 @@ class MatchAdmin(admin.ModelAdmin):
         ]
         return custom_urls + urls
 
-    def match_actions(self, obj):
-        """Display action buttons in list view."""
-        generate_url = "/admin/matches/match/generate-matches/"
-        clear_url = "/admin/matches/match/clear-matches/"
-        generate_style = (
-            "background-color: #417690; color: white; "
-            "padding: 10px 15px; text-decoration: none; "
-            "border-radius: 4px; margin-right: 10px;"
+    @admin.action(description="🎅 Generate Secret Santa Matches")
+    def generate_secret_santa_matches(self, request, queryset):
+        """Admin action to generate matches for all participants."""
+        # Clear existing matches first to prevent duplicates
+        existing_count = Match.objects.count()
+        if existing_count > 0:
+            Match.objects.all().delete()
+            self.message_user(
+                request,
+                f"🗑️ Cleared {existing_count} existing match(es) first.",
+                level=messages.INFO
+            )
+
+        success, message = generate_matches()
+        if success:
+            self.message_user(
+                request, f"✅ {message}", level=messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request, f"❌ {message}", level=messages.ERROR
+            )
+
+    @admin.action(description="🗑️ Clear All Matches")
+    def clear_all_matches(self, request, queryset):
+        """Admin action to delete all existing matches."""
+        count = Match.objects.count()
+        Match.objects.all().delete()
+        self.message_user(
+            request,
+            f"✅ Successfully deleted {count} match(es).",
+            level=messages.SUCCESS
         )
-        clear_style = (
-            "background-color: #ba2121; color: white; "
-            "padding: 10px 15px; text-decoration: none; "
-            "border-radius: 4px;"
-        )
-        return format_html(
-            '<a class="button" href="{}" style="{}">'
-            '🎅 Generate Matches</a> '
-            '<a class="button" href="{}" style="{}">'
-            '🗑️ Clear All</a>',
-            generate_url, generate_style, clear_url, clear_style
-        )
-    match_actions.short_description = 'Actions'
+
+    def changelist_view(self, request, extra_context=None):
+        """Add custom context for the change list template."""
+        extra_context = extra_context or {}
+        extra_context['matches_count'] = Match.objects.count()
+        return super().changelist_view(request, extra_context)
 
     def generate_matches_view(self, request):
         """Custom admin view to generate matches."""
-        if Match.objects.exists():
+        # Clear existing matches first to prevent duplicates
+        existing_count = Match.objects.count()
+        if existing_count > 0:
+            Match.objects.all().delete()
             self.message_user(
                 request,
-                "⚠️ Matches already exist! Clear them first.",
-                level=messages.WARNING
+                f"🗑️ Cleared {existing_count} existing match(es) first.",
+                level=messages.INFO
+            )
+
+        success, message = generate_matches()
+        if success:
+            self.message_user(
+                request, f"✅ {message}", level=messages.SUCCESS
             )
         else:
-            success, message = generate_matches()
-            if success:
-                self.message_user(
-                    request, f"✅ {message}", level=messages.SUCCESS
-                )
-            else:
-                self.message_user(
-                    request, f"❌ {message}", level=messages.ERROR
-                )
+            self.message_user(
+                request, f"❌ {message}", level=messages.ERROR
+            )
 
         return redirect('admin:matches_match_changelist')
 
