@@ -143,3 +143,11 @@ The project consists of four main apps: `gifts`, `logs`, `matches`, and `users`.
 - Implement email notifications for matches.
 - Add support for multiple Secret Santa groups.
 - Improve the UI with more interactive elements.
+
+## Contributors
+
+This project was developed by the following contributors:
+
+- [Scaphix](https://github.com/Scaphix)
+- [Julia Volponi](https://github.com/juliavolponi)
+- [Idil Ismail](https://github.com/iismail06)
