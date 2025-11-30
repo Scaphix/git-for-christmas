@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#dw6p-_(fs%5$84ps8xeulipjtgb141aij3pk1&a@4@de+8m$d')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = 'True'
 
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for now, configure properly later
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'gitforchristmas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
