@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+
+{% block title %}Login - Git for Christmas{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>🎅 Login to Secret Santa 🎄</h1>
+    <p class="subtitle">Welcome back to the gift exchange!</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    
+    <div class="link-text">
+        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+    </div>
+</div>
+{% endblock %}
+
