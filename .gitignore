@@ -1,2 +1,11 @@
-venv/
+
+/node_modules
+/dist
+/build
+/out
+.DS_Store
+Thumbs.db
+/venv
 __pycache__/
+npm-debug.log*
+.env
