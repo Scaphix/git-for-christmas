@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 /node_modules
 /dist
@@ -9,3 +10,32 @@ Thumbs.db
 __pycache__/
 npm-debug.log*
 .env
+=======
+# .gitignore
+
+# Ignore the virtual environment directory
+venv/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore database files
+*.sqlite3
+
+# Ignore environment variables file
+.env
+
+# Ignore other system files
+.DS_Store
+*.log
+*.bak
+*.swp
+*.swo
+*.tmp
+*.~
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+>>>>>>> origin/dev

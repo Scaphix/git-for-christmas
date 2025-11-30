@@ -160,3 +160,17 @@ def get_players(request):
         })
     except Exception as e:
         return JsonResponse({'error': f'An unexpected error occurred: {str(e)}'}, status=500)
+from .models import Match
+
+# Create your views here.
+
+
+def matches_list(request):
+    """Show all gift wish list items."""
+    matches = Match.objects.all().order_by("-created_at")
+
+    context = {
+        "matches": matches,
+    }
+
+    return render(request, "matches/matches_list.html", context)

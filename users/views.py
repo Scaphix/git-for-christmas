@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import User
+from .models import Participant
 # Create your views here.
 
 
@@ -17,9 +17,15 @@ def santas_list(request):
     for the /santas/ path.
     """
     return JsonResponse({'status': 'ok', 'message': 'Santas list view is active.'})
+    # Show a list of all Santas registered for the Christmas gift exchange.
+    santas = Participant.objects.all().order_by("-created_at")
 
 
+<<<<<<< HEAD
 def santas_list_view(request): 
     """ Renders the main Secret Santa list and matching interface. 
     """ 
     return render(request, 'users/santas_list.html', {})
+=======
+    return render(request, "users/santas_list.html", context)
+>>>>>>> origin/dev
