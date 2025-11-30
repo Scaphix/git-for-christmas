@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+
+/node_modules
+/dist
+/build
+/out
+.DS_Store
+Thumbs.db
+/venv
+__pycache__/
+npm-debug.log*
+.env
+=======
 # .gitignore
 
 # Ignore the virtual environment directory
@@ -25,3 +38,4 @@ __pycache__/
 # Ignore IDE-specific files
 .vscode/
 .idea/
+>>>>>>> origin/dev
