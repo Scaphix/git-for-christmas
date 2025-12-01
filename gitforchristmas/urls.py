@@ -27,7 +27,3 @@ urlpatterns = [
     path("gifts/", include("gifts.urls")),
     path("matches/", include("matches.urls")),
 ]
-
-# Serve static files in development
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
