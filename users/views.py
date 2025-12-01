@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
 from .models import Participant
+
 # Create your views here.
 
 
@@ -21,11 +25,4 @@ def santas_list(request):
     santas = Participant.objects.all().order_by("-created_at")
 
 
-<<<<<<< HEAD
-def santas_list_view(request): 
-    """ Renders the main Secret Santa list and matching interface. 
-    """ 
-    return render(request, 'users/santas_list.html', {})
-=======
     return render(request, "users/santas_list.html", context)
->>>>>>> origin/dev
