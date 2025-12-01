@@ -1,6 +1,12 @@
 from django.urls import path
-from . import views  # import your views module from the same package
+from . import views
 
 urlpatterns = [
     path("", views.gifts_list, name="gifts_list"),
+    path("add/", views.add_wishlist_item, name="add_wishlist_item"),
+    path(
+        "edit/<int:item_id>/",
+        views.edit_wishlist_item,
+        name="edit_wishlist_item"
+    ),
 ]
