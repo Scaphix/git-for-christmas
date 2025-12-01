@@ -296,8 +296,8 @@
             </button>
 
             <!-- Navigation links -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
@@ -309,19 +309,18 @@
                         <a class="nav-link" href="/matches/">Matches</a>
                     </li>
                     {% if user.is_authenticated %}
-                    <li> <a class="nav-link" href="/logout/">Logout</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout/">Logout</a>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                         <a class="nav-link" href="/login/">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register/">Register</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register/">Register</a>
+                        </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/">Admin</a>
-                    </li>
+                    <!-- Admin link removed -->
                 </ul>
             </div>
         </div>
