@@ -148,6 +148,6 @@ The project consists of four main apps: `gifts`, `logs`, `matches`, and `users`.
 
 This project was developed by the following contributors:
 
-- [Scaphix](https://github.com/Scaphix)
+- [Chahinez](https://github.com/Scaphix)
 - [Julia Volponi](https://github.com/juliavolponi)
 - [Idil Ismail](https://github.com/iismail06)

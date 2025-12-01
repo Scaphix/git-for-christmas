@@ -116,6 +116,107 @@
             font-size: 1.1em;
             margin-bottom: 20px;
         }
+
+        .welcome-message {
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 3em;
+            color: #c41e3a;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .welcome-description {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .welcome-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .welcome-btn-primary {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+        }
+
+        .welcome-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .welcome-btn-secondary {
+            background: linear-gradient(135deg, #2d5016 0%, #1a3009 100%);
+        }
+
+        .welcome-btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(45, 80, 22, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 2px solid #eee;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2em;
+            color: #c41e3a;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
     </style>
 
     <!-- Falling snowballs -->
@@ -131,27 +232,88 @@
     <div class="snowflake">⚪</div>
 
     <div class="container">
-        <h1>🎅 Secret Santa 🎄</h1>
-        <p class="subtitle">Gift Exchange Participants</p>
-
-       
-
-        {% if santas %}
-            <p class="count">Total Participants: {{ santas|length }}</p>
-
-            <div class="participants-grid">
-                {% for santa in santas %}
-                    <div class="participant-item">
-                        <div class="participant-name">{{ santa.user.username }}</div>
-                        <div class="participant-date">Joined: {{ santa.created_at|date:"F d, Y" }}</div>
+        {% if not user.is_authenticated %}
+            <!-- Welcome message for non-authenticated users -->
+            <div class="welcome-message">
+                <div class="welcome-title">🎅 Welcome to Secret Santa! 🎄</div>
+                <div class="welcome-subtitle">Join the Magic of Gift Giving</div>
+                <div class="welcome-description">
+                    Experience the joy of Secret Santa! Create your wishlist, get matched with another participant, 
+                    and discover the perfect gift to make someone's Christmas special. Join our festive community 
+                    and spread the holiday cheer!
+                </div>
+                <div class="welcome-buttons">
+                    <a href="{% url 'register' %}" class="welcome-btn welcome-btn-primary">
+                        🎁 Get Started
+                    </a>
+                    <a href="{% url 'login' %}" class="welcome-btn welcome-btn-secondary">
+                        🔐 Login
+                    </a>
+                </div>
+                <div class="welcome-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-title">Create Wishlist</div>
+                        <div class="feature-description">
+                            Add items to your wishlist so your Secret Santa knows what you'd love to receive
+                        </div>
                     </div>
-                {% endfor %}
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">Get Matched</div>
+                        <div class="feature-description">
+                            Our system randomly matches you with another participant for a fun surprise
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎁</div>
+                        <div class="feature-title">Give & Receive</div>
+                        <div class="feature-description">
+                            See your match's wishlist and discover the perfect gift to make their day
+                        </div>
+                    </div>
+                </div>
             </div>
         {% else %}
-            <div class="no-participants">
-                <p>No participants yet! 🎁</p>
-                <p>Be the first to join the Secret Santa!</p>
-            </div>
+            <!-- Authenticated users see participants list -->
+            <h1>🎅 Secret Santa 🎄</h1>
+            <p class="subtitle">Gift Exchange Participants</p>
+
+            {% if not is_participant %}
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <a href="{% url 'join_secret_santa' %}" style="
+                        display: inline-block;
+                        padding: 12px 30px;
+                        background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-weight: 600;
+                        font-size: 1.1em;
+                        transition: transform 0.2s, box-shadow 0.2s;
+                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(196, 30, 58, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        🎁 Join Secret Santa
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if santas %}
+                <p class="count">Total Participants: {{ santas|length }}</p>
+
+                <div class="participants-grid">
+                    {% for santa in santas %}
+                        <div class="participant-item">
+                            <div class="participant-name">{{ santa.user.username }}</div>
+                            <div class="participant-date">Joined: {{ santa.created_at|date:"F d, Y" }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-participants">
+                    <p>No participants yet! 🎁</p>
+                    <p>Be the first to join the Secret Santa!</p>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
