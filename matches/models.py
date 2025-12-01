@@ -24,3 +24,27 @@ class Match(models.Model):
 
     class Meta:
         verbose_name_plural = "Matches"
+
+
+class GiftAssignment(models.Model):
+    """
+    Assigns specific gift items from receiver's wishlist to a giver.
+    If receiver's wishlist is short, gifts can be reused.
+    """
+    match = models.ForeignKey(
+        Match,
+        on_delete=models.CASCADE,
+        related_name='assigned_gifts'
+    )
+    gift = models.ForeignKey(
+        'gifts.WishListItem',
+        on_delete=models.CASCADE,
+        related_name='assignments'
+    )
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Gift Assignments"
+
+    def __str__(self):
+        return f"{self.match.giver.user.username} → {self.gift.title}"
