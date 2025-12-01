@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='receiving_from', to='users.participant')),
             ],
             options={
-                'verbose_name_plural': 'Matches',
-            },
+                'verbose_name_plural': 'Matches'
+                },
         ),
     ]
