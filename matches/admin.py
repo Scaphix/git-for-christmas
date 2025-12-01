@@ -3,16 +3,46 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import path
 from .models import Match, GiftAssignment
-from .views import generate_matches
+from .views import generate_matches, assign_gifts_to_matches
 
 # Register your models here.
 
 
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('giver', 'receiver', 'created_at')
+    list_display = (
+        'giver',
+        'receiver',
+        'assigned_gifts_display',
+        'created_at'
+    )
     search_fields = ('giver__user__username', 'receiver__user__username')
-    actions = ['generate_secret_santa_matches', 'clear_all_matches']
+    actions = [
+        'generate_secret_santa_matches',
+        'assign_gifts_to_matches',
+        'clear_all_matches'
+    ]
+
+    def get_queryset(self, request):
+        """Optimize queryset with prefetch for gift assignments."""
+        queryset = super().get_queryset(request)
+        return queryset.prefetch_related(
+            'assigned_gifts__gift'
+        ).select_related('giver__user', 'receiver__user')
+
+    def assigned_gifts_display(self, obj):
+        """Display assigned gifts for this match."""
+        assignments = obj.assigned_gifts.all()
+        if assignments.exists():
+            gift_titles = [
+                assignment.gift.title for assignment in assignments
+            ]
+            if len(gift_titles) <= 3:
+                return ", ".join(gift_titles)
+            else:
+                return ", ".join(gift_titles[:3]) + f" (+{len(gift_titles) - 3} more)"
+        return "No gifts assigned"
+    assigned_gifts_display.short_description = "Assigned Gifts"
 
     def get_urls(self):
         urls = super().get_urls()
@@ -21,6 +51,11 @@ class MatchAdmin(admin.ModelAdmin):
                 'generate-matches/',
                 self.admin_site.admin_view(self.generate_matches_view),
                 name='matches_match_generate',
+            ),
+            path(
+                'assign-gifts/',
+                self.admin_site.admin_view(self.assign_gifts_view),
+                name='matches_match_assign_gifts',
             ),
             path(
                 'clear-matches/',
@@ -58,6 +93,19 @@ class MatchAdmin(admin.ModelAdmin):
                 request, f"❌ {message}", level=messages.ERROR
             )
 
+    @admin.action(description="🎁 Assign Gifts to Matches")
+    def assign_gifts_to_matches(self, request, queryset):
+        """Admin action to assign gifts to existing matches."""
+        success, message = assign_gifts_to_matches()
+        if success:
+            self.message_user(
+                request, f"✅ {message}", level=messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request, f"❌ {message}", level=messages.ERROR
+            )
+
     @admin.action(description="🗑️ Clear All Matches")
     def clear_all_matches(self, request, queryset):
         """Admin action to delete all matches and gift assignments."""
@@ -78,6 +126,9 @@ class MatchAdmin(admin.ModelAdmin):
         """Add custom context for the change list template."""
         extra_context = extra_context or {}
         extra_context['matches_count'] = Match.objects.count()
+        extra_context['gift_assignments_count'] = (
+            GiftAssignment.objects.count()
+        )
         return super().changelist_view(
             request, extra_context
         )
@@ -109,6 +160,19 @@ class MatchAdmin(admin.ModelAdmin):
                 request, f"❌ {message}", level=messages.ERROR
             )
 
+        return redirect('admin:matches_match_changelist')
+
+    def assign_gifts_view(self, request):
+        """Custom admin view to assign gifts to matches."""
+        success, message = assign_gifts_to_matches()
+        if success:
+            self.message_user(
+                request, f"✅ {message}", level=messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request, f"❌ {message}", level=messages.ERROR
+            )
         return redirect('admin:matches_match_changelist')
 
     def clear_matches_view(self, request):

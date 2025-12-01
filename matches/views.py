@@ -88,6 +88,7 @@ def generate_matches():
 
             # Assign gifts from receiver's wishlist to each giver
             gifts_assigned_count = 0
+            matches_without_gifts = []
             for match in matches_created:
                 receiver_gifts = list(
                     WishListItem.objects.filter(
@@ -97,8 +98,8 @@ def generate_matches():
 
                 if receiver_gifts:
                     # Number of gifts to assign per match
-                    # Assign up to 3, or reuse if needed
-                    num_gifts_to_assign = min(3, len(receiver_gifts) * 2)
+                    # Assign up to 2, fewer if receiver has fewer
+                    num_gifts_to_assign = min(2, len(receiver_gifts))
 
                     # Randomly select gifts, with replacement if needed
                     selected_gifts = random.choices(
@@ -106,19 +107,114 @@ def generate_matches():
                         k=num_gifts_to_assign
                     )
 
-                    # Create gift assignments (allow duplicates if list is short)
+                    # Create gift assignments
+                    # (allow duplicates if list is short)
                     for gift in selected_gifts:
                         GiftAssignment.objects.create(
                             match=match,
                             gift=gift
                         )
                         gifts_assigned_count += 1
+                else:
+                    # Track matches where receiver has no wishlist items
+                    matches_without_gifts.append(
+                        match.receiver.user.username
+                    )
 
             count = len(participants)
-            return True, (
+            message = (
                 f"Successfully matched {count} participants and "
                 f"assigned {gifts_assigned_count} gifts!"
             )
+            if matches_without_gifts:
+                message += (
+                    f" Note: {len(matches_without_gifts)} receiver(s) have "
+                    f"no wishlist items: {', '.join(matches_without_gifts)}"
+                )
 
+            return True, message
+
+    except Exception as e:
+        return False, f"Error: {str(e)}"
+
+
+def assign_gifts_to_matches():
+    """
+    Randomly assign gifts from receiver's wishlist to existing matches.
+    Assigns up to 2 gifts per match, fewer if receiver has fewer.
+
+    Returns: (success: bool, message: str)
+    """
+    # Check if matches exist
+    matches = Match.objects.all()
+    if not matches.exists():
+        return False, "No matches exist! Generate matches first."
+
+    try:
+        with transaction.atomic():
+            # Clear existing gift assignments
+            GiftAssignment.objects.all().delete()
+
+            # Assign gifts from receiver's wishlist to each giver
+            gifts_assigned_count = 0
+            matches_without_gifts = []
+            for match in matches:
+                receiver_gifts = list(
+                    WishListItem.objects.filter(
+                        participant=match.receiver
+                    )
+                )
+
+                if receiver_gifts:
+                    # Number of gifts to assign per match
+                    # Assign up to 2, fewer if receiver has fewer
+                    num_gifts_to_assign = min(2, len(receiver_gifts))
+
+                    # Randomly select gifts, with replacement if needed
+                    selected_gifts = random.choices(
+                        receiver_gifts,
+                        k=num_gifts_to_assign
+                    )
+
+                    # Create gift assignments
+                    # (allow duplicates if list is short)
+                    for gift in selected_gifts:
+                        GiftAssignment.objects.create(
+                            match=match,
+                            gift=gift
+                        )
+                        gifts_assigned_count += 1
+                else:
+                    # Track matches where receiver has no wishlist items
+                    matches_without_gifts.append(
+                        match.receiver.user.username
+                    )
+
+            message = (
+                f"Successfully assigned {gifts_assigned_count} gifts to "
+                f"{matches.count()} match(es)!"
+            )
+            if matches_without_gifts:
+                message += (
+                    f" Note: {len(matches_without_gifts)} receiver(s) have "
+                    f"no wishlist items: {', '.join(matches_without_gifts)}"
+                )
+
+            return True, message
+
+    except Exception as e:
+        return False, f"Error: {str(e)}"
+
+
+def clear_gift_assignments():
+    """
+    Clear all gift assignments.
+
+    Returns: (success: bool, message: str)
+    """
+    try:
+        count = GiftAssignment.objects.count()
+        GiftAssignment.objects.all().delete()
+        return True, f"Successfully cleared {count} gift assignment(s)!"
     except Exception as e:
         return False, f"Error: {str(e)}"
