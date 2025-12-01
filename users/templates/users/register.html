@@ -3,27 +3,22 @@
 
 {% block title %}Register - Secret Santa{% endblock %}
 
-
 {% block content %}
 <style>
-    /* Scoped auth page styles so navbar remains full-width */
-    .auth-page {
+    body {
         font-family: 'Arial', sans-serif;
         max-width: 500px;
         margin: 50px auto;
         padding: 20px;
         background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
-        min-height: 70vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height: 100vh;
         position: relative;
         overflow-x: hidden;
     }
 
-    .auth-page .container {
+    .container {
         background: white;
-        border-radius: 0;
+        border-radius: 0 !important;
         padding: 40px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         position: relative;
@@ -133,8 +128,7 @@
     }
 </style>
 
-<div class="auth-page">
-    <div class="container">
+<div class="container">
     <h1>🎅 Join Secret Santa 🎄</h1>
     <p class="subtitle">Create your account to participate!</p>
     
@@ -154,7 +148,6 @@
     
     <div class="link-text">
         <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
-    </div>
     </div>
 </div>
 {% endblock %}
