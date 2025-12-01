@@ -264,10 +264,10 @@
                         <a class="nav-link" href="{% url 'santas_list' %}">Home</a>
                     </li>
                     {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'gifts_list' %}">Wishlist</a>
+                        </li>
                         {% if is_participant %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/gifts/">Wish Lists</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/matches/">Matches</a>
                             </li>

@@ -154,6 +154,9 @@
     {% endif %}
 
     {% if gifts %}
+        <p class="count" style="text-align: center; color: #c41e3a; font-size: 1.1em; margin-bottom: 20px;">
+            Total Wishlist Items: {{ gifts|length }}
+        </p>
         <div class="gifts-grid">
             {% for gift in gifts %}
                 <div class="gift-item">
