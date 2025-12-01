@@ -54,7 +54,8 @@
 
 {% block content %}
 <style>
-    body {
+    /* Scoped auth page styles so navbar remains full-width */
+    .auth-page {
         font-family: 'Arial', sans-serif;
         max-width: 500px;
         margin: 50px auto;
@@ -65,7 +66,7 @@
         overflow-x: hidden;
     }
 
-    .container {
+    .auth-page .container {
         background: white;
         border-radius: 0;
         padding: 40px;
@@ -177,7 +178,8 @@
     }
 </style>
 
-<div class="container">
+<div class="auth-page">
+    <div class="container">
     <h1>🎅 Join Secret Santa 🎄</h1>
     <p class="subtitle">Create your account to participate!</p>
     
@@ -197,6 +199,7 @@
     
     <div class="link-text">
         <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
     </div>
 </div>
 {% endblock %}
