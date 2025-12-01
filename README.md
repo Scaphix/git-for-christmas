@@ -1,4 +1,7 @@
+
 # [Git for Christmas](https://git-for-christmas.onrender.com)
+
+![Website Preview](Document/readme/background.png)
 
 ## Project Description
 
