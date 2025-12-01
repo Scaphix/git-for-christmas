@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Wishlist Item{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Snowball animation */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        z-index: 1;
+        color: white;
+        font-size: 20px;
+        animation: fall linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(100vh);
+        }
+    }
+
+    /* Create multiple snowballs at different positions */
+    .snowflake:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+    .snowflake:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 2s; }
+    .snowflake:nth-child(3) { left: 30%; animation-duration: 9s; animation-delay: 1s; }
+    .snowflake:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 3s; }
+    .snowflake:nth-child(5) { left: 50%; animation-duration: 7s; animation-delay: 1.5s; }
+    .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 0.5s; }
+    .snowflake:nth-child(7) { left: 70%; animation-duration: 10s; animation-delay: 2.5s; }
+    .snowflake:nth-child(8) { left: 80%; animation-duration: 8s; animation-delay: 1s; }
+    .snowflake:nth-child(9) { left: 90%; animation-duration: 11s; animation-delay: 0s; }
+    .snowflake:nth-child(10) { left: 15%; animation-duration: 9s; animation-delay: 3s; }
+
+    .container {
+        background: white;
+        border-radius: 0;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 2;
+        margin-bottom: 0;
+        max-width: 600px;
+        margin: 50px auto;
+    }
+
+    h1 {
+        color: #c41e3a;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    form p {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    form label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    form input,
+    form textarea {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+        font-family: inherit;
+    }
+
+    form input:focus,
+    form textarea:focus {
+        outline: none;
+        border-color: #c41e3a;
+    }
+
+    button[type="submit"],
+    .btn-cancel {
+        background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    button[type="submit"]:hover,
+    .btn-cancel:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
+    }
+
+    .errorlist {
+        color: #c41e3a;
+        list-style: none;
+        padding: 0;
+        margin: 5px 0;
+        font-size: 0.9em;
+    }
+
+    .helptext {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>
+
+<!-- Falling snowballs -->
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+<div class="snowflake">⚪</div>
+
+<div class="container">
+    <h1>✏️ Edit Wishlist Item</h1>
+    <p class="subtitle">Update your wishlist item</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 10px; margin-bottom: 20px; border-radius: 5px; background: {% if message.tags == 'error' %}#ffebee{% else %}#e8f5e9{% endif %}; border-left: 4px solid {% if message.tags == 'error' %}#c41e3a{% else %}#4caf50{% endif %}; color: {% if message.tags == 'error' %}#c41e3a{% else %}#2e7d32{% endif %};">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button-group">
+            <button type="submit">Update Item</button>
+            <a href="{% url 'gifts_list' %}" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
