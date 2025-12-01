@@ -3,54 +3,6 @@
 
 {% block title %}Register - Secret Santa{% endblock %}
 
-{% block extra_css %}
-<style>
-    /* Override navbar for register page to use Bootstrap burger menu */
-    .custom-navbar {
-        position: relative;
-    }
-
-    .navbar-toggler {
-        border: 2px solid white;
-        padding: 4px 8px;
-    }
-
-    .navbar-toggler:focus {
-        box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-    }
-
-    .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    .navbar-collapse {
-        background: linear-gradient(135deg, #2d5016 0%, #1a3009 100%);
-        border-radius: 0 0 15px 15px;
-        padding: 20px;
-        margin-top: 10px;
-    }
-
-    .navbar-nav {
-        width: 100%;
-    }
-
-    .navbar-nav .nav-link {
-        color: white !important;
-        padding: 12px 20px;
-        text-align: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .navbar-nav .nav-link:last-child {
-        border-bottom: none;
-    }
-
-    .navbar-nav .nav-link:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: white !important;
-    }
-</style>
-{% endblock %}
 
 {% block content %}
 <style>

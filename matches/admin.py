@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import path
-from .models import Match
+from .models import Match, GiftAssignment
 from .views import generate_matches
 
 # Register your models here.
@@ -33,13 +33,18 @@ class MatchAdmin(admin.ModelAdmin):
     @admin.action(description="🎅 Generate Secret Santa Matches")
     def generate_secret_santa_matches(self, request, queryset):
         """Admin action to generate matches for all participants."""
-        # Clear existing matches first to prevent duplicates
-        existing_count = Match.objects.count()
-        if existing_count > 0:
+        # Clear existing matches and gift assignments first
+        existing_match_count = Match.objects.count()
+        existing_gift_count = GiftAssignment.objects.count()
+        if existing_match_count > 0 or existing_gift_count > 0:
+            GiftAssignment.objects.all().delete()
             Match.objects.all().delete()
             self.message_user(
                 request,
-                f"🗑️ Cleared {existing_count} existing match(es) first.",
+                (
+                    f"🗑️ Cleared {existing_match_count} existing match(es) "
+                    f"and {existing_gift_count} gift assignment(s) first."
+                ),
                 level=messages.INFO
             )
 
@@ -55,12 +60,17 @@ class MatchAdmin(admin.ModelAdmin):
 
     @admin.action(description="🗑️ Clear All Matches")
     def clear_all_matches(self, request, queryset):
-        """Admin action to delete all existing matches."""
-        count = Match.objects.count()
+        """Admin action to delete all matches and gift assignments."""
+        match_count = Match.objects.count()
+        gift_count = GiftAssignment.objects.count()
+        GiftAssignment.objects.all().delete()  # Delete assignments first
         Match.objects.all().delete()
         self.message_user(
             request,
-            f"✅ Successfully deleted {count} match(es).",
+            (
+                f"✅ Successfully deleted {match_count} match(es) and "
+                f"{gift_count} gift assignment(s)."
+            ),
             level=messages.SUCCESS
         )
 
@@ -68,17 +78,24 @@ class MatchAdmin(admin.ModelAdmin):
         """Add custom context for the change list template."""
         extra_context = extra_context or {}
         extra_context['matches_count'] = Match.objects.count()
-        return super().changelist_view(request, extra_context)
+        return super().changelist_view(
+            request, extra_context
+        )
 
     def generate_matches_view(self, request):
         """Custom admin view to generate matches."""
-        # Clear existing matches first to prevent duplicates
-        existing_count = Match.objects.count()
-        if existing_count > 0:
+        # Clear existing matches and gift assignments first
+        existing_match_count = Match.objects.count()
+        existing_gift_count = GiftAssignment.objects.count()
+        if existing_match_count > 0 or existing_gift_count > 0:
+            GiftAssignment.objects.all().delete()
             Match.objects.all().delete()
             self.message_user(
                 request,
-                f"🗑️ Cleared {existing_count} existing match(es) first.",
+                (
+                    f"🗑️ Cleared {existing_match_count} existing match(es) "
+                    f"and {existing_gift_count} gift assignment(s) first."
+                ),
                 level=messages.INFO
             )
 
@@ -95,12 +112,17 @@ class MatchAdmin(admin.ModelAdmin):
         return redirect('admin:matches_match_changelist')
 
     def clear_matches_view(self, request):
-        """Custom admin view to clear all matches."""
-        count = Match.objects.count()
+        """Custom admin view to clear all matches and gift assignments."""
+        match_count = Match.objects.count()
+        gift_count = GiftAssignment.objects.count()
+        GiftAssignment.objects.all().delete()  # Delete assignments first
         Match.objects.all().delete()
         self.message_user(
             request,
-            f"✅ Deleted {count} match(es).",
+            (
+                f"✅ Deleted {match_count} match(es) and "
+                f"{gift_count} gift assignment(s)."
+            ),
             level=messages.SUCCESS
         )
         return redirect('admin:matches_match_changelist')

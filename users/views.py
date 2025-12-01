@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from .models import Participant
@@ -71,4 +72,27 @@ def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
         messages.success(request, 'You have been logged out successfully.')
+    return redirect('santas_list')
+
+
+@login_required
+def join_secret_santa(request):
+    """Allow logged-in users to join the Secret Santa event."""
+    if request.user.is_authenticated:
+        # Check if user already has a participant record
+        participant, created = Participant.objects.get_or_create(
+            user=request.user
+        )
+        
+        if created:
+            messages.success(
+                request,
+                f'Welcome to Secret Santa, {request.user.username}! 🎅'
+            )
+        else:
+            messages.info(
+                request,
+                'You are already a participant! 🎄'
+            )
+    
     return redirect('santas_list')
