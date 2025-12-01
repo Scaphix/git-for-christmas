@@ -21,6 +21,44 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <!-- Responsive fixes for hero container to avoid horizontal overflow -->
+    <style>
+        .site-hero-bg {
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .site-hero-bg .container {
+            box-sizing: border-box;
+            max-width: 980px; /* stable readable width */
+            width: 100%;
+            margin: 0 auto; /* sit directly under the navbar */
+            padding: 36px 40px 40px; /* keep internal spacing */
+            background: #ffffff; /* explicit white panel */
+            border-radius: 8px; /* subtle rounding */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* softer shadow */
+            background-clip: padding-box;
+        }
+
+        @media (max-width: 767px) {
+            .site-hero-bg .container {
+                width: calc(100% - 32px);
+                padding: 20px;
+                margin: 0 auto;
+                border-radius: 6px;
+            }
+        }
+
+        @media (max-width: 573px) {
+            .site-hero-bg .container {
+                width: calc(100% - 24px);
+                padding: 12px;
+                margin: 0 auto;
+                border-radius: 4px;
+            }
+        }
+    </style>
+
     <style>
         /* Navbar Styling */
         .custom-navbar {
