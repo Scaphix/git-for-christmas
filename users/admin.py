@@ -49,7 +49,7 @@ class ParticipantAdmin(admin.ModelAdmin):
             f"✅ Successfully deleted {count} participant(s).",
             level=messages.SUCCESS
         )
-    
+
     def get_form(self, request, obj=None, **kwargs):
         """Override form to disable add button on user field."""
         form = super().get_form(request, obj, **kwargs)

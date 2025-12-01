@@ -22,16 +22,4 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
-        migrations.CreateModel(
-            name='Player',
-            fields=[
-                ('user_id', models.CharField(help_text='unique identifier assigned by the organizer for pairing purposes.', max_length=100, primary_key=True, serialize=False, unique=True)),
-                ('name', models.CharField(help_text="The participant's display name.", max_length=100)),
-                ('registered_at', models.DateTimeField(auto_now_add=True)),
-            ],
-            options={
-                'verbose_name': 'Player',
-                'verbose_name_plural': 'Players',
-            },
-        ),
     ]
