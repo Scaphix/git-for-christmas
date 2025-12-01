@@ -193,16 +193,23 @@
     <nav class="custom-navbar">
         <div class="nav-container">
             <!-- Brand logo -->
-            <a href="/" class="nav-brand">Secret Santa</a>
+            <a href="{% url 'santas_list' %}" class="nav-brand">Secret Santa</a>
 
             <!-- Right side navigation group -->
             <div class="nav-right">
                 <!-- Navigation links -->
                 <div class="nav-links active" id="nav-links">
                     <a href="/">Home</a>
+                    {% if user.is_authenticated %}
+                        <a href="/logout/">Logout</a>
+                    {% else %}
+                        <a href="/login/">Login</a>
+                        <a href="/register/">Register</a>
+                    {% endif %}
                     <a href="/gifts/">Wish Lists</a>
                     <a href="/matches/">Matches</a>
                     <a href="/admin/">Admin</a>
+                    
                 </div>
             </div>
         </div>

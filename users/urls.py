@@ -3,5 +3,7 @@ from . import views  # import your views module from the same package
 
 urlpatterns = [
     path("", views.santas_list, name="santas_list"),
-
+    path("login/", views.login_view, name="login"),
+    path("register/", views.register_view, name="register"),
+    path("logout/", views.logout_view, name="logout"),
 ]

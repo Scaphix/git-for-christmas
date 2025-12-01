@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Login - Secret Santa{% endblock %}
+{% block title %}Register - Secret Santa{% endblock %}
 
 {% block content %}
 <style>
@@ -109,6 +109,12 @@
         font-size: 0.9em;
     }
 
+    .helptext {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 5px;
+    }
+
     .message-error {
         background: #ffebee;
         border-left: 4px solid #c41e3a;
@@ -123,8 +129,8 @@
 </style>
 
 <div class="container">
-    <h1>🎅 Login to Secret Santa 🎄</h1>
-    <p class="subtitle">Welcome back to the gift exchange!</p>
+    <h1>🎅 Join Secret Santa 🎄</h1>
+    <p class="subtitle">Create your account to participate!</p>
     
     {% if messages %}
         {% for message in messages %}
@@ -137,12 +143,11 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
     </form>
     
     <div class="link-text">
-        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
     </div>
 </div>
 {% endblock %}
-
