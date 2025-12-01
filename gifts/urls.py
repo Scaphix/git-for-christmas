@@ -9,4 +9,9 @@ urlpatterns = [
         views.edit_wishlist_item,
         name="edit_wishlist_item"
     ),
+    path(
+        "delete/<int:item_id>/",
+        views.delete_wishlist_item,
+        name="delete_wishlist_item"
+    ),
 ]

@@ -134,7 +134,23 @@
         <h1>🎅 Secret Santa 🎄</h1>
         <p class="subtitle">Gift Exchange Participants</p>
 
-       
+        {% if user.is_authenticated and not is_participant %}
+            <div style="text-align: center; margin-bottom: 30px;">
+                <a href="{% url 'join_secret_santa' %}" style="
+                    display: inline-block;
+                    padding: 12px 30px;
+                    background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    font-size: 1.1em;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(196, 30, 58, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                    🎁 Join Secret Santa
+                </a>
+            </div>
+        {% endif %}
 
         {% if santas %}
             <p class="count">Total Participants: {{ santas|length }}</p>
