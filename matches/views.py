@@ -29,10 +29,18 @@ def matches_list(request):
     try:
         match = Match.objects.get(giver=participant)
         has_match = True
-        # Get assigned gifts for this match
-        assigned_gifts = GiftAssignment.objects.filter(
-            match=match
-        ).select_related('gift')
+        # Get assigned gifts for this match (unique gifts only)
+        # Get one assignment per unique gift (the first one)
+        assigned_gifts = []
+        seen_gift_ids = set()
+        for assignment in (
+            GiftAssignment.objects.filter(match=match)
+            .select_related('gift')
+            .order_by('assigned_at')
+        ):
+            if assignment.gift_id not in seen_gift_ids:
+                assigned_gifts.append(assignment)
+                seen_gift_ids.add(assignment.gift_id)
     except Match.DoesNotExist:
         match = None
         has_match = False
