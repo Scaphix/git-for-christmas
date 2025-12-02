@@ -174,41 +174,23 @@ def assign_gifts_to_matches():
                 )
 
                 if receiver_gifts:
-                    # Number of gifts to assign per match
-                    # Assign up to 2, fewer if receiver has fewer
-                    num_gifts_to_assign = min(2, len(receiver_gifts))
-
                     # Randomly select gifts, with replacement if needed
-                    selected_gifts = random.choices(
-                        receiver_gifts,
-                        k=num_gifts_to_assign
-                    )
+                    selected_gifts = random.choice(receiver_gifts)
 
                     # Create gift assignments
                     # (allow duplicates if list is short)
-                    for gift in selected_gifts:
-                        GiftAssignment.objects.create(
+                    GiftAssignment.objects.create(
                             match=match,
-                            gift=gift
+                            gift=selected_gifts
                         )
-                        gifts_assigned_count += 1
+                    gifts_assigned_count += 1
                 else:
-                    # Track matches where receiver has no wishlist items
                     matches_without_gifts.append(
-                        match.receiver.user.username
-                    )
-
-            message = (
-                f"Successfully assigned {gifts_assigned_count} gifts to "
-                f"{matches.count()} match(es)!"
-            )
-            if matches_without_gifts:
-                message += (
-                    f" Note: {len(matches_without_gifts)} receiver(s) have "
-                    f"no wishlist items: {', '.join(matches_without_gifts)}"
-                )
-
-            return True, message
+                            match.receiver.user.username
+                        )
+            return True,
+            f"Successfully assigned {gifts_assigned_count} gifts to "
+            f"{matches.count()} match(es)!"
 
     except Exception as e:
         return False, f"Error: {str(e)}"
